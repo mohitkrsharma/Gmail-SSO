@@ -1,11 +1,10 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import {
   SocialUser,
   GoogleLoginProvider,
   SocialAuthService,
 } from 'angularx-social-login';
-import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -16,6 +15,7 @@ export class DashboardComponent implements OnInit {
   reactiveForm!: FormGroup;
   user!: SocialUser;
   isSignedin!: boolean;
+  userData: any = [];
 
   constructor(
     private fb: FormBuilder,
@@ -29,9 +29,14 @@ export class DashboardComponent implements OnInit {
     });
 
     this.socialAuthService.authState.subscribe((user) => {
+      debugger;
       this.user = user;
       this.isSignedin = user != null;
-      console.log(this.user);
+      if (this.user !== null) {
+        this.userData.push(user);
+      }
+      console.log(this.userData);
+      this.socialAuthService.signOut();
     });
   }
 
