@@ -28,15 +28,17 @@ export class DashboardComponent implements OnInit {
       password: ['', Validators.required],
     });
 
-    this.socialAuthService.authState.subscribe((user) => {
+    this.socialAuthService.authState.subscribe((user: any) => {
       debugger;
       this.user = user;
       this.isSignedin = user != null;
-      if (this.user !== null) {
+      if (this.user !== null && this.isSignedin !== false) {
         this.userData.push(user);
       }
       console.log(this.userData);
       this.socialAuthService.signOut();
+      this.isSignedin = false;
+      this.socialAuthService.signOut(true);
     });
   }
 
@@ -45,6 +47,7 @@ export class DashboardComponent implements OnInit {
   }
 
   logout(): void {
-    this.socialAuthService.signOut();
+    // this.socialAuthService.signOut();
+    this.socialAuthService.signOut(true);
   }
 }
